@@ -9,21 +9,15 @@ export interface IUser {
     firstName: string;
     lastName: string;
   };
-  address: {
-    street?: string;
-    city?: string;
-    state?: string;
-    zipCode?: number;
-    country?: string;
-  };
-  numberPhone?: number;
+  address?: IAddress;
+  phoneNumber?: String;
   orderHistory: IOrder[];
   wishList: mongoose.Types.ObjectId[]; //cambiarlo por el array de product.model
   cart: {
     productId: mongoose.Types.ObjectId;
     quantity: number;
   }[];
-  roles: IRole[];
+  role: IRole[];
   createdAt: Date;
   updatedAt: Date;
 }
@@ -41,4 +35,11 @@ interface IOrder {
   products: IProductInOrder[];
   status: "pending" | "shipped" | "delivered" | "cancelled";
   orderAddress: string;
+}
+export interface IAddress {
+  street: string;
+  city: string;
+  state: string;
+  zipCode: number | string;
+  country: string;
 }

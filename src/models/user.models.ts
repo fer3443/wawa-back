@@ -14,10 +14,10 @@ const userSchema = new Schema<IUser>({
     street: String,
     city: String,
     state: String,
-    zipCode: Number,
+    zipCode: Number || String,
     country: String,
   },
-  numberPhone: Number,
+  phoneNumber: String,
   orderHistory: [
     {
       _id: mongoose.Types.ObjectId,
@@ -41,7 +41,9 @@ const userSchema = new Schema<IUser>({
       quantity: Number,
     },
   ],
-  roles: [{ type: String, default: 'costumer'}],
+  role: [{ type: String, default: 'costumer'}],
 	createdAt: { type: Date, default: Date.now()},
 	updatedAt: { type: Date, default: Date.now()}
 });
+
+export default mongoose.model('User', userSchema)
