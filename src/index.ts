@@ -14,7 +14,6 @@ app.use(cors());
 app.use(express.json())
 
 import './database/database'
-
 app.listen(app.get('PORT'), () => {
     console.log(`Servidor ejecutandose en puerto ${app.get('PORT')}` )
 });
