@@ -1,4 +1,9 @@
-import mongoose from "mongoose";
+import mongoose, { Model } from "mongoose";
+
+
+export interface IUserMethods {
+  generateAccesToken():string
+}
 
 export interface IUser {
   _id: mongoose.Types.ObjectId;
@@ -18,6 +23,9 @@ export interface IUser {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export type UserModel = Model<IUser, {}, IUserMethods>
+
 interface IProductInOrder {
   product: mongoose.Types.ObjectId;
   quantity: number;

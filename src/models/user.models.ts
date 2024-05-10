@@ -1,9 +1,9 @@
 import mongoose, { Schema } from "mongoose";
 import jwt from "jsonwebtoken";
-import { IUser } from "../interfaces/Iuser";
+import { IUser, IUserMethods, UserModel } from "../interfaces/Iuser";
 import { generatePayload } from '../helpers/token.helper';
 
-const userSchema = new Schema<IUser>({
+const userSchema = new Schema<IUser, UserModel, IUserMethods>({
   username: { type: String, required: true, unique: true },
   email: { type: String, required: true },
   password: { type: String, required: true },
@@ -46,13 +46,11 @@ const userSchema = new Schema<IUser>({
 	createdAt: { type: Date, default: Date.now()},
 	updatedAt: { type: Date, default: Date.now()}
 });
-
 userSchema.methods.generateAccessToken = function():string{
   const payload = generatePayload(this._id);
   const secretKey = process.env.JWT_SECRET_KEY as string;
   const expirationTime = '1h';
   const token = jwt.sign(payload, secretKey, {expiresIn: expirationTime});
-  console.log(token)
   return token
 }
-export default mongoose.model<IUser>('User', userSchema)
+export default mongoose.model<IUser, UserModel>('User', userSchema)
