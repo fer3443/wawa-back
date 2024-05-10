@@ -2,6 +2,7 @@ import express from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import userRouter from './routes/user.routes'
 
 dotenv.config()
 
@@ -17,3 +18,5 @@ import './database/database'
 app.listen(app.get('PORT'), () => {
     console.log(`Servidor ejecutandose en puerto ${app.get('PORT')}` )
 });
+
+app.use('/api', userRouter)

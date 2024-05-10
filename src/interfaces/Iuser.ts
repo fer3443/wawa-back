@@ -5,10 +5,7 @@ export interface IUser {
   username: string;
   email: string;
   password: string;
-  name: {
-    firstName: string;
-    lastName: string;
-  };
+  names: IName
   address?: IAddress;
   phoneNumber?: String;
   orderHistory: IOrder[];
@@ -17,7 +14,7 @@ export interface IUser {
     productId: mongoose.Types.ObjectId;
     quantity: number;
   }[];
-  role: IRole[];
+  role: IRole[] | IRole;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -42,4 +39,8 @@ export interface IAddress {
   state: string;
   zipCode: number | string;
   country: string;
+}
+export interface IName {
+  firstName:string,
+  lastName:string
 }

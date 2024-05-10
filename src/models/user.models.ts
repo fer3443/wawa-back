@@ -4,10 +4,10 @@ import { IUser } from "../interfaces/Iuser";
 import { generatePayload } from '../helpers/token.helper';
 
 const userSchema = new Schema<IUser>({
-  username: { type: String, required: true },
+  username: { type: String, required: true, unique: true },
   email: { type: String, required: true },
   password: { type: String, required: true },
-  name: {
+  names: {
     firstName: { type: String, required: true },
     lastName: { type: String, required: true },
   },
@@ -42,7 +42,7 @@ const userSchema = new Schema<IUser>({
       quantity: Number,
     },
   ],
-  role: [{ type: String, default: 'costumer'}],
+  role: { type: String, default: 'costumer'},
 	createdAt: { type: Date, default: Date.now()},
 	updatedAt: { type: Date, default: Date.now()}
 });
@@ -55,4 +55,4 @@ userSchema.methods.generateAccessToken = function():string{
   console.log(token)
   return token
 }
-export default mongoose.model('User', userSchema)
+export default mongoose.model<IUser>('User', userSchema)

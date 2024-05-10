@@ -1,4 +1,4 @@
-import { IAddress } from "../interfaces/Iuser";
+import { IAddress, IName } from "../interfaces/Iuser";
 
 export class userValidations {
   //valida que el correo cumpla con las normal de mail
@@ -14,7 +14,15 @@ export class userValidations {
 		const hasNumber = /[0-9]/.test(password);
 		return password.length >= minLength && hasUpperCase && hasLowerCase && hasNumber;
 	}
-
+	//validacion para nombre
+	public static validateName(name:IName):boolean{
+		return (
+			typeof name.firstName === 'string' &&
+			name.firstName.trim().length >= 3 &&
+			typeof name.lastName === 'string' &&
+			name.lastName.trim().length >= 2
+		  );
+	}
 	//validacion de roles
 	public static validateRole(role:string, validRole: string[]):boolean{
 		return validRole.includes(role);
@@ -28,14 +36,13 @@ export class userValidations {
 
 	//validacion para address
 	public static validateAddress(address:IAddress):boolean{
-		const hasAddress = address !== (undefined  && null);
 		const hasData = address.city.trim().length > 0 && address.country.trim().length > 0 && address.state.trim().length > 0 && address.street.trim().length > 0;
-		return hasAddress && hasData;
+		return hasData;
 	}
 	
 	//validacion de phoneNumber
 	public static validatePhoneNumber(phoneNumber:string):boolean{
-		const phoneRegex = /^\+?[1-9]\d{1,14}$/; 
+		const phoneRegex = /^\+?[1-9]\d{7,14}$/; 
     return phoneRegex.test(phoneNumber);
 	}
 }
