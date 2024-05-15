@@ -105,7 +105,7 @@ export const LoginUser = async (req: Request, res: Response): Promise<void> => {
             res.status(400).json({ok:false,msg:msg_error});
             return
           }
-          const token = userLoged.generateAccesToken;
+          const token = userLoged.generateAccessToken();
           res.status(200).json({ok: true, user: userLoged, token: token})
         }
       }else if(email){
@@ -124,7 +124,7 @@ export const LoginUser = async (req: Request, res: Response): Promise<void> => {
             res.status(400).json({ok:false,msg:msg_error});
             return
           }
-          const token = userLoged.generateAccesToken;
+          const token = userLoged.generateAccessToken();
           res.status(200).json({ok: true, user: userLoged, token: token})
         }
       }else{

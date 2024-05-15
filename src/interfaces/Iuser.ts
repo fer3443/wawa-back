@@ -2,7 +2,7 @@ import mongoose, { Model } from "mongoose";
 
 
 export interface IUserMethods {
-  generateAccesToken():string
+  generateAccessToken():string
 }
 
 export interface IUser {
