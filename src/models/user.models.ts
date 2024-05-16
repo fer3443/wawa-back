@@ -1,6 +1,6 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { Schema, mongo } from "mongoose";
 import jwt from "jsonwebtoken";
-import { IUser, IUserMethods, UserModel } from "../interfaces/Iuser";
+import { IUser, IUserMethods, UserModel } from '../interfaces/Iuser';
 import { generatePayload } from '../helpers/token.helper';
 
 const userSchema = new Schema<IUser, UserModel, IUserMethods>({
@@ -53,4 +53,19 @@ userSchema.methods.generateAccessToken = function():string{
   const token = jwt.sign(payload, secretKey, {expiresIn: expirationTime});
   return token
 }
+
+userSchema.set('toJSON', {
+  transform: function( doc, retorno ):void {
+    retorno.id = retorno._id;
+    delete retorno.password;
+    delete retorno._id;
+    delete retorno.wishList;
+    delete retorno.__v;
+    delete retorno.address;
+    delete retorno.role;
+    delete retorno.phoneNumber;
+    delete retorno.orderHistory;
+    delete retorno.cart;
+  }
+})
 export default mongoose.model<IUser, UserModel>('User', userSchema)
