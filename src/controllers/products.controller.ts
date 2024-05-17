@@ -8,48 +8,96 @@ export const AddProducts = async (
   res: Response
 ): Promise<void> => {
   try {
-    const { name, description, price, categoty, stock, photoUrl } =
+    const { name, description, price, category, stock, photoUrl } =
       req.body as IProducts;
-    // const isValidName = productsValidations.validateName(name);
-    // const isValidDescription = productsValidations.validateName(description);
-    // const isValidPrice = productsValidations.validatePrice(price);
-    // const isValidCategory = productsValidations.validateCategory(categoty);
-    // const isValidStock = productsValidations.validateStock(stock);
-    // if(photoUrl !== undefined) {
-    // 	const isValidPhoto = productsValidations.validatePhoto(photoUrl);
-    // }
     const validationsResults: Record<string, boolean> = {
       isValidName: productsValidations.validateName(name),
-      isValidDescription: productsValidations.validateName(description),
+      isValidDescription: productsValidations.validateDescription(description),
       isValidPrice: productsValidations.validatePrice(price),
-      isValidCategory: productsValidations.validateCategory(categoty),
+      isValidCategory: productsValidations.validateCategory(category),
       isValidStock: productsValidations.validateStock(stock),
-			isValidPhoto: photoUrl !== undefined ? productsValidations.validatePhoto(photoUrl) : true
+      isValidPhoto:
+        photoUrl !== undefined
+          ? productsValidations.validatePhoto(photoUrl)
+          : true,
     };
-		const hasError: boolean = Object.values(validationsResults).some((isValid) => (!isValid));
-    if(hasError){
-      res.status(400).json({ok:false, msg: 'Error en alguno de los datos agregados, uno o mas son invalidos'})
-      return
+    const hasError: boolean = Object.values(validationsResults).some(
+      (isValid) => !isValid
+    );
+    if (hasError) {
+      res
+        .status(400)
+        .json({
+          ok: false,
+          msg: "Error en alguno de los datos agregados, uno o mas son invalidos",
+        });
+      return;
     }
     const newProduct = await productsSchema.create({
       name,
       description,
       price,
-      categoty,
+      category,
       stock,
       photoUrl,
     });
-    res
-      .status(200)
-      .json({
-        ok: true,
-        product: newProduct,
-        msg: "Producto agregado con éxito",
-      });
+    res.status(200).json({
+      ok: true,
+      product: newProduct,
+      msg: "Producto agregado con éxito",
+    });
   } catch (error) {
     console.error(`Error al crear producto ${error}`);
     res
       .status(500)
       .json({ ok: false, msg: `Error al crear producto ${error}` });
+  }
+};
+export const UpdateProducts = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const { productId } = req.params;
+    const { name, description, price, category, stock, photoUrl } =
+      req.body as IProducts;
+      const validationsResults: Record<string, boolean> = {
+        isValidName: productsValidations.validateName(name),
+        isValidDescription: productsValidations.validateDescription(description),
+        isValidPrice: productsValidations.validatePrice(price),
+        isValidCategory: productsValidations.validateCategory(category),
+        isValidStock: productsValidations.validateStock(stock),
+        isValidPhoto:
+          photoUrl !== undefined
+            ? productsValidations.validatePhoto(photoUrl)
+            : true,
+      };
+      const hasError: boolean = Object.values(validationsResults).some(
+        (isValid) => !isValid
+      );
+      if (hasError) {
+        res
+          .status(400)
+          .json({
+            ok: false,
+            msg: "Error en alguno de los datos actualizados, uno o mas son invalidos",
+          });
+        return;
+      }
+    const updateProduct = await productsSchema.findByIdAndUpdate(productId, {
+      ...req.body,
+      updatedAt: new Date(),
+    }, {new: true});
+    !updateProduct ? res.status(404).json({ok: false, msg: "producto no encontrado"}) : true
+    res
+      .status(200)
+      .json({
+        ok: true,
+        updatedProduct: updateProduct,
+        msg: "producto actualizado con éxito",
+      });
+  } catch (error) {
+    console.error(`Error al actualizar producto ${error}`)
+    res.status(400).json({ok: false, msg: `Error al actualizar el producto ${error}`})
   }
 };

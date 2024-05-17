@@ -1,4 +1,3 @@
-import { IProducts } from "../interfaces/IProducts";
 export class productsValidations {
   public static validateName(name: string, minLength = 3):boolean {
 		return typeof name === 'string' && name.trim().length >= minLength
@@ -16,6 +15,6 @@ export class productsValidations {
 		return typeof stock === 'number' && stock > 0
 	}
 	public static validatePhoto(photoUrl: string):boolean {
-		return typeof photoUrl === 'string' && photoUrl.trim().length !== 0
+		return typeof photoUrl === 'string' && photoUrl.trim().length > 0
 	}
 }
