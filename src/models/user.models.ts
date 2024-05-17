@@ -26,7 +26,7 @@ const userSchema = new Schema<IUser, UserModel, IUserMethods>({
       total: Number,
       products: [
         {
-          product: { type: mongoose.Types.ObjectId, ref: "Product" },
+          product: { type: mongoose.Types.ObjectId, ref: "Products" },
           quantity: Number,
           price: Number,
         },
@@ -35,10 +35,10 @@ const userSchema = new Schema<IUser, UserModel, IUserMethods>({
       orderAddress: String,
     },
   ],
-  wishList: [{ type: mongoose.Types.ObjectId, ref: "Product" }], //luego cambiar esto
+  wishList: [{ type: mongoose.Types.ObjectId, ref: "Products" }], //luego cambiar esto
   cart: [
     {
-      productId: { type: mongoose.Types.ObjectId, ref: "Product" },
+      productId: { type: mongoose.Types.ObjectId, ref: "Products" },
       quantity: Number,
     },
   ],

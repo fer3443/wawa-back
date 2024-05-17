@@ -20,4 +20,4 @@ productsSchema.set("toJSON", {
       delete ret.createdAt;
   },
 });
-export default mongoose.model<IProducts>("product", productsSchema);
+export default mongoose.model<IProducts>("Products", productsSchema);
