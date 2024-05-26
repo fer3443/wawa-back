@@ -7,4 +7,5 @@ export interface IProducts {
   photoUrl?: string;
   createdAt: Date;
   updatedAt: Date;
+  virtual_delete: boolean;
 }

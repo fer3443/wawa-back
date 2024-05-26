@@ -10,6 +10,7 @@ const productsSchema = new Schema<IProducts>({
   photoUrl: { type: String},
   createdAt: { type: Date, default: Date.now() },
   updatedAt: { type: Date, default: Date.now() },
+  virtual_delete: { type: Boolean, default: false}
 });
 
 productsSchema.set("toJSON", {
