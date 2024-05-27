@@ -51,6 +51,30 @@ export const AddProducts = async (
       .json({ ok: false, msg: `Error al crear producto ${error}` });
   }
 };
+
+export const GetAllProducts = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const maxElement: number = 10;
+  const { page } = req.query;
+  try {
+    const pageNumber = page ? Number(page) : 1
+    const products = await productsSchema
+      .find()
+      .skip(maxElement * (pageNumber - 1))
+      .limit(maxElement);
+    if(!products.length){
+      res.status(404).json({ok:false, msg: 'Productos no encontrados'})
+      return
+    }
+    res.status(200).json({ok:true, data: products, msg: 'Peticion exitosa'})
+  } catch (error) {
+    console.error(`Error al realizar la peticion ${error}`)
+    res.status(500).json({ok:false, msg: `Error al realizar la peticion ${error}`})
+  }
+};
+
 export const UpdateProducts = async (
   req: Request,
   res: Response
@@ -120,13 +144,11 @@ export const VirtualDelProduct = async (
       res.status(404).json({ ok: false, msg: "Producto no encontrado" });
       return;
     }
-    res
-      .status(200)
-      .json({
-        ok: true,
-        data: deleteProduct,
-        msg: "Producto eliminado con exito",
-      });
+    res.status(200).json({
+      ok: true,
+      data: deleteProduct,
+      msg: "Producto eliminado con exito",
+    });
   } catch (error) {
     console.error(`Error al borrar producto ${error}`);
     res
